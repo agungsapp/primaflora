@@ -1,0 +1,28 @@
+.text-brand h1 a {
+color: #343a40;
+}
+
+.bg-navbar {
+    background-color: #85BC27 !important;
+}
+
+.bg-prima-top {
+    background-color: #C1F16D;
+}
+.search-light{
+    background-color: white !important;
+}
+
+.search {
+    background-color: #85BC27 !important;
+}
+.search:hover {
+    background-color: #343a40 !important;
+}
+.timetable_sub thead tr th {
+    background-color: #85BC27;
+    border: 2px solid rgba(52, 58, 64, 0.3);
+}
+.multi-column-dropdown h6 {
+    color: #85BC27;
+}
