@@ -123,11 +123,11 @@ if (isset($_POST["update"])) {
 							<th>No.</th>
 							<th>Produk</th>
 							<th>Nama Produk</th>
-							<th>Jumlah</th>
-
-
+							<th>Tanggal Mulai</th>
+							<th>Tanggal Selesai</th>
+							<th>Lama Sewa</th>
 							<th>Harga Satuan</th>
-							<th>Hapus</th>
+
 						</tr>
 					</thead>
 
@@ -142,21 +142,11 @@ if (isset($_POST["update"])) {
 								<td class="invert"><?php echo $no++ ?></td>
 								<td class="invert"><a href="product.php?idproduk=<?php echo $b['idproduk'] ?>"><img src="<?php echo $b['gambar'] ?>" width="100px" height="100px" /></a></td>
 								<td class="invert"><?php echo $b['namaproduk'] ?></td>
-								<td class="invert">
-									<div class="quantity">
-										<div class="quantity-select">
-											<input type="number" name="jumlah" class="form-control" height="100px" value="<?php echo $b['qty'] ?>" \>
-										</div>
-									</div>
-								</td>
-
+								<td class="invert"><?php echo $b['tglmulai'] ?></td>
+								<td class="invert"><?php echo $b['tglselesai'] ?></td>
+								<td class="invert"><?php echo $b['lamaorder'] ?> Hari</td>
 								<td class="invert">Rp<?php echo number_format($b['hargaafter']) ?></td>
-								<td class="invert">
-									<div class="rem">
 
-										<input type="submit" name="update" class="form-control" value="Update" \>
-										<input type="hidden" name="idproduknya" value="<?php echo $b['idproduk'] ?>" \>
-										<input type="submit" name="hapus" class="form-control" value="Hapus" \>
 							</form>
 			</div>
 			<script>
@@ -201,7 +191,7 @@ if (isset($_POST["update"])) {
 					$subtotal = 10000;
 					while ($b = mysqli_fetch_array($brg)) {
 						$hrg = $b['hargaafter'];
-						$qtyy = $b['qty'];
+						$qtyy = 1;
 						$totalharga = $hrg * $qtyy;
 						$subtotal += $totalharga
 					?>

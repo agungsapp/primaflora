@@ -11,7 +11,7 @@ date_default_timezone_set("Asia/Bangkok");
     <meta charset="utf-8">
     <link rel="icon" type="image/png" href="../favicon.png">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Kelola Pesanan - Tokopekita</title>
+    <title>Kelola Pesanan - Prima Flora</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/png" href="assets/images/icon/favicon.ico">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
@@ -145,6 +145,8 @@ date_default_timezone_set("Asia/Bangkok");
                                                 <th>ID Pesanan</th>
                                                 <th>Nama Customer</th>
                                                 <th>Tanggal Order</th>
+                                                <th>Mulai Sewa</th>
+                                                <th>Akhir Sewa</th>
                                                 <th>Total</th>
                                                 <th>Status</th>
                                             </tr>
@@ -155,6 +157,13 @@ date_default_timezone_set("Asia/Bangkok");
                                             $no = 1;
                                             while ($p = mysqli_fetch_array($brgs)) {
                                                 $orderids = $p['orderid'];
+                                                $oridi = $p['orderid'];
+                                                $useridi = $p['userid'];
+                                                $ipro = $p['idproduk'];
+
+                                                $tgl = mysqli_query($conn, "SELECT * FROM detailorder where orderid='$oridi' and userid='$useridi'");
+                                                $get = mysqli_fetch_array($tgl);
+
                                             ?>
 
                                                 <tr>
@@ -162,9 +171,11 @@ date_default_timezone_set("Asia/Bangkok");
                                                     <td><strong><a href="order.php?orderid=<?php echo $p['orderid'] ?>">#<?php echo $p['orderid'] ?></a></strong></td>
                                                     <td><?php echo $p['namalengkap'] ?></td>
                                                     <td><?php echo $p['tglorder'] ?></td>
+                                                    <td><?= $get['tglmulai'] ?></td>
+                                                    <td><?= $get['tglselesai'] ?></td>
                                                     <td>Rp<?php
 
-                                                            $result1 = mysqli_query($conn, "SELECT SUM(d.qty*p.hargaafter) AS count FROM detailorder d, produk p where orderid='$orderids' and p.idproduk=d.idproduk order by d.idproduk ASC");
+                                                            $result1 = mysqli_query($conn, "SELECT SUM(p.hargaafter) AS count FROM detailorder d, produk p where orderid='$orderids' and p.idproduk=d.idproduk order by d.idproduk ASC");
                                                             $cekrow = mysqli_num_rows($result1);
                                                             $row1 = mysqli_fetch_assoc($result1);
                                                             $count = $row1['count'];
@@ -193,6 +204,7 @@ date_default_timezone_set("Asia/Bangkok");
                                                         ?></td>
                                                 </tr>
                                             <?php
+
                                             }
                                             ?>
                                         </tbody>
@@ -213,7 +225,8 @@ date_default_timezone_set("Asia/Bangkok");
     <!-- footer area start-->
     <footer>
         <div class="footer-area">
-            <p>By Richard's Lab</p>
+            <p>By M. Khoerul Luthfi
+            </p>
         </div>
     </footer>
     <!-- footer area end-->

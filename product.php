@@ -4,91 +4,49 @@ include 'dbconnect.php';
 
 $idproduk = $_GET['idproduk'];
 
+
+
+
+
+require 'functions/disablepesan.php';
+
 if (isset($_POST['addprod'])) {
-	if (!isset($_SESSION['log'])) {
-		header('location:login.php');
-	} else {
-		$ui = $_SESSION['id'];
-		$cek = mysqli_query($conn, "select * from cart where userid='$ui' and status='Cart'");
-		$liat = mysqli_num_rows($cek);
-		$f = mysqli_fetch_array($cek);
-		$orid = $f['orderid'];
-
-		//kalo ternyata udeh ada order id nya
-		if ($liat > 0) {
-
-			//cek barang serupa
-			$cekbrg = mysqli_query($conn, "select * from detailorder where idproduk='$idproduk' and orderid='$orid'");
-			$liatlg = mysqli_num_rows($cekbrg);
-			$brpbanyak = mysqli_fetch_array($cekbrg);
-			$jmlh = $brpbanyak['qty'];
-
-			//kalo ternyata barangnya ud ada
-			if ($liatlg > 0) {
-				$i = 1;
-				$baru = $jmlh + $i;
-
-				$updateaja = mysqli_query($conn, "update detailorder set qty='$baru' where orderid='$orid' and idproduk='$idproduk'");
-
-				if ($updateaja) {
-					echo " <div class='alert alert-success'>
-								Barang sudah pernah dimasukkan ke keranjang, jumlah akan ditambahkan
-							  </div>
-							  <meta http-equiv='refresh' content='1; url= product.php?idproduk=" . $idproduk . "'/>";
-				} else {
-					echo "<div class='alert alert-warning'>
-								Gagal menambahkan ke keranjang
-							  </div>
-							  <meta http-equiv='refresh' content='1; url= product.php?idproduk=" . $idproduk . "'/>";
-				}
-			} else {
-
-				$tambahdata = mysqli_query($conn, "insert into detailorder (orderid,idproduk,qty) values('$orid','$idproduk','1')");
-				if ($tambahdata) {
-					echo " <div class='alert alert-success'>
-								Berhasil menambahkan ke keranjang
-							  </div>
-							<meta http-equiv='refresh' content='1; url= product.php?idproduk=" . $idproduk . "'/>  ";
-				} else {
-					echo "<div class='alert alert-warning'>
-								Gagal menambahkan ke keranjang
-							  </div>
-							 <meta http-equiv='refresh' content='1; url= product.php?idproduk=" . $idproduk . "'/> ";
-				}
-			};
-		} else {
-
-			//kalo belom ada order id nya
-			$oi = crypt(rand(22, 999), time());
-
-			$bikincart = mysqli_query($conn, "insert into cart (orderid, userid) values('$oi','$ui')");
-
-			if ($bikincart) {
-				$tambahuser = mysqli_query($conn, "insert into detailorder (orderid,idproduk,qty) values('$oi','$idproduk','1')");
-				if ($tambahuser) {
-					echo " <div class='alert alert-success'>
-								Berhasil menambahkan ke keranjang
-							  </div>
-							<meta http-equiv='refresh' content='1; url= product.php?idproduk=" . $idproduk . "'/>  ";
-				} else {
-					echo "<div class='alert alert-warning'>
-								Gagal menambahkan ke keranjang
-							  </div>
-							 <meta http-equiv='refresh' content='1; url= product.php?idproduk=" . $idproduk . "'/> ";
-				}
-			} else {
-				echo "gagal bikin cart";
-			}
-		}
-	}
+	echo '
+	<script>
+	 alert("$_POST["mulai"]")
+    </script>';
+	require 'functions/funbeli.php';
 };
 ?>
-
 <!DOCTYPE html>
 <html>
 
 <head>
 	<title>Prima Flora - Produk</title>
+
+	<style>
+		div.input-group {
+			margin-top: 1rem;
+			width: 120px;
+			box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.7);
+		}
+
+		input.button {
+			box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.7);
+		}
+
+		.set-tanggal {
+			margin-top: 2rem;
+		}
+
+		.mulai,
+		.akhir {
+			margin-top: 1rem;
+			display: flex;
+			width: 400px;
+			justify-content: space-between;
+		}
+	</style>
 	<?php
 	include 'page-link/link.php'
 	?>
@@ -158,7 +116,8 @@ if (isset($_POST['addprod'])) {
 				<li class="active"><?php
 									$p = mysqli_fetch_array(mysqli_query($conn, "Select * from produk where idproduk='$idproduk'"));
 									echo $p['namaproduk'];
-									?></li>
+									?>
+				</li>
 			</ol>
 		</div>
 	</div>
@@ -166,7 +125,11 @@ if (isset($_POST['addprod'])) {
 	<div class="products">
 		<div class="container">
 			<div class="agileinfo_single">
-
+				<!-- allert tidak tersedia  -->
+				<?php if ($tersedia == false) : ?>
+					<div class='alert alert-danger text-center'>Barang tidak dapat di pesan ! atau sedang disewa </div>
+				<?php endif ?>
+				<!-- end allert -->
 				<div class="col-md-4 agileinfo_single_left">
 					<img id="example" src="<?php echo $p['gambar'] ?>" alt=" " class="img-responsive">
 				</div>
@@ -193,27 +156,97 @@ if (isset($_POST['addprod'])) {
 							<h4 class="m-sing">Rp<?php echo number_format($p['hargaafter']) ?> <span>Rp<?php echo number_format($p['hargabefore']) ?></span></h4>
 						</div>
 						<div class="snipcart-details agileinfo_single_right_details">
-							<form action="#" method="post">
-								<fieldset>
+							<form action="" method="post">
+								<!-- tambah barang -->
+								<!-- <label style="margin-top: 1rem; margin-left:-40px;" for="quant">Jumlah Barang :</label>
+								<div class="input-group">
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-default btn-number" disabled="disabled" data-type="minus" data-field="kuantiti">
+											<span class="glyphicon glyphicon-minus"></span>
+										</button>
+									</span>
+									<input type="text" name="kuantiti" id="quant" class="form-control input-number" value="1" min="1" max="10">
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-default btn-number" data-type="plus" data-field="kuantiti">
+											<span class="glyphicon glyphicon-plus"></span>
+										</button>
+									</span>
+								</div> -->
+								<!-- tambah barang end -->
+								<!-- lama sewa -->
+								<!-- <label style="margin-top: 1rem; margin-left:-70px;" for="quant">Lama Sewa :</label>
+								<div class="input-group">
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-default btn-number" disabled="disabled" data-type="minus" data-field="lamasewa">
+											<span class="glyphicon glyphicon-minus"></span>
+										</button>
+									</span>
+									<input type="text" name="lamasewa" id="quant" class="form-control input-number" value="5" min="5" max="10">
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-default btn-number" data-type="plus" data-field="lamasewa">
+											<span class="glyphicon glyphicon-plus"></span>
+										</button>
+									</span>
+								</div> -->
+								<!-- lama sewa end -->
+
+								<!-- date picker -->
+								<div class="set-tanggal">
+									<div class="mulai">
+										<label for="mulai">Tangal Mulai</label>
+										<input id="mulai" autocomplete="off" name="mulai" id="mulai" type="text" class="datepicker">
+									</div>
+									<div class="akhir">
+										<label for="akhir">Tangal Akhir</label>
+										<input id="akhir" autocomplete="off" name="akhir" id="akhir" type="text" class="datepicker">
+									</div>
+								</div>
+
+								<!-- date picker end -->
+								<fieldset style="margin-top: 2rem;">
 									<input type="hidden" name="idprod" value="<?php echo $idproduk ?>">
-									<input type="submit" name="addprod" value="Add to cart" class="button">
+									<input id="beli" type="submit" name="addprod" value="Tambah Ke Keranjang" class="button">
 								</fieldset>
+
 							</form>
 						</div>
 					</div>
+
+
 				</div>
 				<div class="clearfix"> </div>
 			</div>
 		</div>
 	</div>
 
-	<!-- //footer -->
+	<!-- footer -->
 	<?php
 	include 'page-footer/footer.php'
 	?>
-	<!-- //footer -->
+	<!-- footer -->
 	<!-- Bootstrap Core JavaScript -->
+
+	<!-- disable jika status tidak tersedia -->
+	<?php if (isset($disabled)) : ?>
+		<script>
+			var mulai = document.getElementById('mulai');
+			var akhir = document.getElementById('akhir');
+			var beli = document.getElementById('beli');
+			mulai.disabled = true;
+			akhir.disabled = true;
+			beli.disabled = true;
+		</script>
+	<?php else : ?>
+	<?php endif ?>
+	<!-- disable end -->
+
+
 	<script src="js/bootstrap.min.js"></script>
+	<script>
+		<?php
+		require 'functions/funsweet.php';
+		?>
+	</script>
 
 	<!-- top-header and slider -->
 	<!-- here stars scrolling icon -->
@@ -257,6 +290,9 @@ if (isset($_POST['addprod'])) {
 		});
 	</script>
 	<!-- //main slider-banner -->
+
+	<script src="js/tambah.js"></script>
+	<script src="js/datepicker.js"></script>
 </body>
 
 </html>

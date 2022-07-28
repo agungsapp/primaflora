@@ -16,6 +16,7 @@ if (isset($_POST['login'])) {
 	$queryuser = mysqli_query($conn, "SELECT * FROM login WHERE email='$email'");
 	$cariuser = mysqli_fetch_assoc($queryuser);
 
+
 	if (password_verify($pass, $cariuser['password'])) {
 		$_SESSION['id'] = $cariuser['userid'];
 		$_SESSION['role'] = $cariuser['role'];
@@ -108,7 +109,9 @@ if (isset($_POST['login'])) {
 	<!-- login -->
 	<div class="login">
 		<div class="container">
-			<h2>Masuk</h2>
+			<h2>Masuk
+				<a href="loginadmin.php" target="_blank"><img style="width: 25px; margin-top: -6px; margin-left: 10px;" src="images/darkadmin.png" alt="adminlogo"></a>
+			</h2>
 
 			<div class="login-form-grids animated wow slideInUp" data-wow-delay=".5s">
 				<form method="post">

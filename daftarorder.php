@@ -123,6 +123,8 @@ if (isset($_POST["update"])) {
 							<th>No.</th>
 							<th>Kode Order</th>
 							<th>Tanggal Order</th>
+							<th>Mulai Sewa</th>
+							<th>Sewa Berakhir</th>
 							<th>Total</th>
 							<th>Status</th>
 						</tr>
@@ -133,7 +135,11 @@ if (isset($_POST["update"])) {
 					$brg = mysqli_query($conn, "SELECT DISTINCT(idcart), c.orderid, tglorder, status from cart c, detailorder d where c.userid='$uid' and d.orderid=c.orderid and status!='Cart' order by tglorder DESC");
 					$no = 1;
 					while ($b = mysqli_fetch_array($brg)) {
+						$oridi = $b['orderid'];
+						$useridi = $uid;
 
+						$tgl = mysqli_query($conn, "SELECT * FROM detailorder where orderid='$oridi' and userid='$useridi'");
+						$get = mysqli_fetch_array($tgl);
 					?>
 						<tr class="rem1">
 							<form method="post">
@@ -141,11 +147,13 @@ if (isset($_POST["update"])) {
 								<td class="invert"><a href="order.php?id=<?php echo $b['orderid'] ?>"><?php echo $b['orderid'] ?></a></td>
 
 								<td class="invert"><?php echo $b['tglorder'] ?></td>
+								<td class="invert"><?= $get['tglmulai'] ?></td>
+								<td class="invert"><?= $get['tglselesai'] ?></td>
 								<td class="invert">
 
 									Rp<?php $ongkir = 10000;
 										$ordid = $b['orderid'];
-										$result1 = mysqli_query($conn, "SELECT SUM(qty*hargaafter)+$ongkir AS count FROM detailorder d, produk p where d.orderid='$ordid' and p.idproduk=d.idproduk order by d.idproduk ASC");
+										$result1 = mysqli_query($conn, "SELECT SUM(1*hargaafter)+$ongkir AS count FROM detailorder d, produk p where d.orderid='$ordid' and p.idproduk=d.idproduk order by d.idproduk ASC");
 										$cekrow = mysqli_num_rows($result1);
 										$row1 = mysqli_fetch_assoc($result1);
 										$count = $row1['count'];

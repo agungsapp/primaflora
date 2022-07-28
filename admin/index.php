@@ -1,28 +1,32 @@
-<?php 
-	session_start();
-	include '../dbconnect.php';
-		
-	$itungcust = mysqli_query($conn,"select count(userid) as jumlahcust from login where role='Member'");
-	$itungcust2 = mysqli_fetch_assoc($itungcust);
-	$itungcust3 = $itungcust2['jumlahcust'];
-	
-	$itungorder = mysqli_query($conn,"select count(idcart) as jumlahorder from cart where status not like 'Selesai' and status not like 'Canceled'");
-	$itungorder2 = mysqli_fetch_assoc($itungorder);
-	$itungorder3 = $itungorder2['jumlahorder'];
-	
-	$itungtrans = mysqli_query($conn,"select count(orderid) as jumlahtrans from konfirmasi");
-	$itungtrans2 = mysqli_fetch_assoc($itungtrans);
-	$itungtrans3 = $itungtrans2['jumlahtrans'];
-	
-	?>
+<?php
+session_start();
+include '../dbconnect.php';
+
+$itungcust = mysqli_query($conn, "select count(userid) as jumlahcust from login where role='Member'");
+$itungcust2 = mysqli_fetch_assoc($itungcust);
+$itungcust3 = $itungcust2['jumlahcust'];
+
+$itungorder = mysqli_query($conn, "select count(idcart) as jumlahorder from cart where status not like 'Selesai' and status not like 'Canceled'");
+$itungorder2 = mysqli_fetch_assoc($itungorder);
+$itungorder3 = $itungorder2['jumlahorder'];
+
+$itungtrans = mysqli_query($conn, "select count(orderid) as jumlahtrans from konfirmasi");
+$itungtrans2 = mysqli_fetch_assoc($itungtrans);
+$itungtrans3 = $itungtrans2['jumlahtrans'];
+
+if (!isset($_SESSION['login'])) {
+    header("location: ../loginadmin.php");
+    exit;
+}
+
+?>
 
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
-	<link rel="icon" 
-      type="image/png" 
-      href="../favicon.png">
+    <link rel="icon" type="image/png" href="../favicon.png">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Admin Panel - Tokopekita</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -33,7 +37,7 @@
     <link rel="stylesheet" href="assets/css/metisMenu.css">
     <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="assets/css/slicknav.min.css">
-	
+
     <!-- amchart css -->
     <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
     <!-- others css -->
@@ -62,27 +66,27 @@
                 <div class="menu-inner">
                     <nav>
                         <ul class="metismenu" id="menu">
-							<li class="active"><a href="index.php"><span>Home</span></a></li>
-							<li><a href="../"><span>Kembali ke Toko</span></a></li>
-							<li>
+                            <li class="active"><a href="index.php"><span>Home</span></a></li>
+                            <li><a href="../"><span>Kembali ke Toko</span></a></li>
+                            <li>
                                 <a href="manageorder.php"><i class="ti-dashboard"></i><span>Kelola Pesanan</span></a>
                             </li>
-							<li>
+                            <li>
                                 <a href="javascript:void(0)" aria-expanded="true"><i class="ti-layout"></i><span>Kelola Toko
                                     </span></a>
                                 <ul class="collapse">
                                     <li><a href="kategori.php">Kategori</a></li>
                                     <li><a href="produk.php">Produk</a></li>
-									<li><a href="pembayaran.php">Metode Pembayaran</a></li>
+                                    <li><a href="pembayaran.php">Metode Pembayaran</a></li>
                                 </ul>
                             </li>
-							<li><a href="customer.php"><span>Kelola Pelanggan</span></a></li>
-							<li><a href="user.php"><span>Kelola Staff</span></a></li>
+                            <li><a href="customer.php"><span>Kelola Pelanggan</span></a></li>
+                            <li><a href="user.php"><span>Kelola Staff</span></a></li>
                             <li>
                                 <a href="../logout.php"><span>Logout</span></a>
-                                
+
                             </li>
-                            
+
                         </ul>
                     </nav>
                 </div>
@@ -105,32 +109,33 @@
                     <!-- profile info & task notification -->
                     <div class="col-md-6 col-sm-4 clearfix">
                         <ul class="notification-area pull-right">
-                            <li><h3><div class="date">
-								<script type='text/javascript'>
-						<!--
-						var months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-						var myDays = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-						var date = new Date();
-						var day = date.getDate();
-						var month = date.getMonth();
-						var thisDay = date.getDay(),
-							thisDay = myDays[thisDay];
-						var yy = date.getYear();
-						var year = (yy < 1000) ? yy + 1900 : yy;
-						document.write(thisDay + ', ' + day + ' ' + months[month] + ' ' + year);		
-						//-->
-						</script></b></div></h3>
-
-						</li>
+                            <li>
+                                <h3>
+                                    <div class="date">
+                                        <script type='text/javascript'>
+                                            var months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                                            var myDays = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+                                            var date = new Date();
+                                            var day = date.getDate();
+                                            var month = date.getMonth();
+                                            var thisDay = date.getDay(),
+                                                thisDay = myDays[thisDay];
+                                            var yy = date.getYear();
+                                            var year = (yy < 1000) ? yy + 1900 : yy;
+                                            document.write(thisDay + ', ' + day + ' ' + months[month] + ' ' + year);
+                                        </script></b>
+                                    </div>
+                                </h3>
+                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
-			
-			
-			<!-- header area end -->
-			<?php 
-			/*
+
+
+            <!-- header area end -->
+            <?php
+            /*
 				$periksa_bahan=mysqli_query($conn,"select * from stock_brg where stock <10");
 				while($p=mysqli_fetch_array($periksa_bahan)){	
 					if($p['stock']>=1){	
@@ -147,13 +152,13 @@
 				}
 				
 				*/
-				?>
-			
-            
+            ?>
+
+
             <!-- page title area end -->
             <div class="main-content-inner">
-			
-                
+
+
                 <div class="sales-report-area mt-5 mb-5">
                     <div class="row">
                         <div class="col-md-4">
@@ -166,10 +171,10 @@
                                     <div class="d-flex justify-content-between pb-2">
                                         <h1><?php echo $itungcust3 ?></h1>
                                     </div>
-									</div>
+                                </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-md-4">
                             <div class="single-report">
                                 <div class="s-report-inner pr--20 pt--30 mb-3">
@@ -183,7 +188,7 @@
                                 </div>
                             </div>
                         </div>
-						<div class="col-md-4">
+                        <div class="col-md-4">
                             <div class="single-report mb-xs-30">
                                 <div class="s-report-inner pr--20 pt--30 mb-3">
                                     <div class="icon"><i class="fa fa-link"></i></div>
@@ -193,14 +198,14 @@
                                     <div class="d-flex justify-content-between pb-2">
                                         <h1><?php echo $itungtrans3 ?></h1>
                                     </div>
-									<!--
-									<button type="button" class="<?php 
-									if($itungtrans3==0){
-										echo 'btn btn-secondary btn-block';
-									} else {
-										echo 'btn btn-primary btn-block';
-									}
-									?>
+                                    <!--
+									<button type="button" class="<?php
+                                                                    if ($itungtrans3 == 0) {
+                                                                        echo 'btn btn-secondary btn-block';
+                                                                    } else {
+                                                                        echo 'btn btn-primary btn-block';
+                                                                    }
+                                                                    ?>
 									">Lihat Transaksi</button>
 									-->
                                 </div>
@@ -208,8 +213,8 @@
                         </div>
                     </div>
                 </div>
-                
-                
+
+
                 <!-- overview area end -->
                 <!-- market value area start -->
                 <div class="row mt-5 mb-5">
@@ -217,31 +222,34 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="d-sm-flex justify-content-between align-items-center">
-									<h2>Selamat Datang</h2>
+                                    <h2>Selamat Datang</h2>
                                 </div>
                                 <div class="market-status-table mt-4">
-                                    Anda masuk sebagai <strong><?php echo $_SESSION['name'] ?></strong>
-									<br>
-									<p>Pada halaman admin, Anda dapat menambah kategori produk, mengelola produk, 
-									mengelola user dan admin, melihat konfirmasi pembayaran</p>
+                                    Anda masuk sebagai <strong>
+                                        <?php echo $_SESSION['nama']
+                                        ?>
+                                    </strong>
+                                    <br>
+                                    <p>Pada halaman admin, Anda dapat menambah kategori produk, mengelola produk,
+                                        mengelola user dan admin, melihat konfirmasi pembayaran</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-              
-                
+
+
                 <!-- row area start-->
             </div>
         </div>
         <!-- main content area end -->
-		
-		
-		
+
+
+
         <!-- footer area start-->
         <footer>
             <div class="footer-area">
-                <p>by Richard's Lab</p>
+                <p>by M. Khoerul Luthfi</p>
             </div>
         </footer>
         <!-- footer area end-->
@@ -265,8 +273,8 @@
     <!-- start zingchart js -->
     <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
     <script>
-    zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
-    ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "ee6b7db5b51705a13dc2339db3edaf6d"];
+        zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
+        ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "ee6b7db5b51705a13dc2339db3edaf6d"];
     </script>
     <!-- all line chart activation -->
     <script src="assets/js/line-chart.js"></script>

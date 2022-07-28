@@ -42,11 +42,11 @@
     <div class="container">
         <div class="w3ls_logo_products_left1">
             <ul class="phone_email">
-                <li><i class="fa fa-phone" aria-hidden="true"></i>Hubungi Kami : (+6281) 222 333</li>
+                <li><i class="fa fa-phone" aria-hidden="true"></i>Hubungi Kami : 0853-1467-5522</li>
             </ul>
         </div>
         <div class="w3ls_logo_products_left text-brand">
-            <h1><a href="index.php">Prima Flora</a></h1>
+            <h1><a href="index.php">Prima Flora Nursery</a></h1>
         </div>
         <div class="w3l_search">
             <form action="#" method="post">

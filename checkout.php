@@ -114,11 +114,7 @@ if (isset($_POST["checkout"])) {
 							<th>No.</th>
 							<th>Produk</th>
 							<th>Nama Produk</th>
-							<th>Jumlah</th>
-
-
 							<th>Sub Total</th>
-							<th>Hapus</th>
 						</tr>
 					</thead>
 
@@ -133,21 +129,9 @@ if (isset($_POST["checkout"])) {
 								<td class="invert"><?php echo $no++ ?></td>
 								<td class="invert"><a href="product.php?idproduk=<?php echo $b['idproduk'] ?>"><img src="<?php echo $b['gambar'] ?>" width="100px" height="100px" /></a></td>
 								<td class="invert"><?php echo $b['namaproduk'] ?></td>
-								<td class="invert">
-									<div class="quantity">
-										<div class="quantity-select">
-											<h4><?php echo $b['qty'] ?></h4>
-										</div>
-									</div>
-								</td>
 
-								<td class="invert">Rp<?php echo number_format($b['hargaafter'] * $b['qty']) ?></td>
-								<td class="invert">
-									<div class="rem">
+								<td class="invert">Rp<?php echo number_format($b['hargaafter'] * 1) ?></td>
 
-										<input type="submit" name="update" class="form-control" value="Update" \>
-										<input type="hidden" name="idproduknya" value="<?php echo $b['idproduk'] ?>" \>
-										<input type="submit" name="hapus" class="form-control" value="Hapus" \>
 							</form>
 			</div>
 			<script>
@@ -192,7 +176,7 @@ if (isset($_POST["checkout"])) {
 					$subtotal = 0;
 					while ($b = mysqli_fetch_array($brg)) {
 						$hrg = $b['hargaafter'];
-						$qtyy = $b['qty'];
+						$qtyy = 1;
 						$totalharga = $hrg * $qtyy;
 						$subtotal += $totalharga;
 					}
@@ -229,7 +213,7 @@ if (isset($_POST["checkout"])) {
 
 			?>
 
-				<img src="<?php echo $p['logo'] ?>" width="300px" height="200px"><br>
+				<img src="images/<?php echo $p['logo'] ?>" width="300px" height="200px"><br>
 				<h4><?php echo $p['metode'] ?> - <?php echo $p['norek'] ?><br>
 					a/n. <?php echo $p['an'] ?></h4><br>
 				<br>

@@ -20,6 +20,13 @@
 	<!-- font-awesome icons -->
 	<link href="css/font-awesome.css" rel="stylesheet">
 	<!-- //font-awesome icons -->
+	<!-- sweet allert css -->
+	<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'>
+
+
+
+
+
 	<!-- js -->
 	<script src="js/jquery-1.11.1.min.js"></script>
 	<!-- //js -->
@@ -39,3 +46,10 @@
 		});
 	</script>
 	<!-- start-smoth-scrolling -->
+
+	<!-- date picker -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js">
+	</script>
+	<!-- sweet allert -->
+
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>

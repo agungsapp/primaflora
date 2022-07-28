@@ -1,21 +1,19 @@
 <div class="footer">
     <div class="container">
         <div class="w3_footer_grids">
-            <div class="col-md-4 w3_footer_grid">
+            <div class="col-md-6 w3_footer_grid">
                 <h3>Hubungi Kami</h3>
 
                 <ul class="address">
-                    <li><i class="glyphicon glyphicon-map-marker" aria-hidden="true"></i>Muhammad Khoerul Luthfi</li>
-                    <li><i class="glyphicon glyphicon-envelope" aria-hidden="true"></i><a href="mailto:info@email">info@email</a></li>
-                    <li><i class="glyphicon glyphicon-earphone" aria-hidden="true"></i>+62 8113 2322</li>
+                    <li><i class="glyphicon glyphicon-map-marker" aria-hidden="true"></i>Gg. Purnawirawan 8 No.Kel, Gn. Terang, Kec. Langkapura, Kota Bandar Lampung, Lampung 35147</li>
+                    <li><i class="glyphicon glyphicon-envelope" aria-hidden="true"></i><a href="mailto:primaflora@gmail.com">primaflora@gmail.com</a></li>
+                    <li><i class="glyphicon glyphicon-earphone" aria-hidden="true"></i>0853-1467-5522</li>
                 </ul>
             </div>
             <div class="col-md-3 w3_footer_grid">
                 <h3>Tentang Kami</h3>
                 <ul class="info">
                     <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="about.html">About Us</a></li>
-                    <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="about.html">How To</a></li>
-                    <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="about.html">FAQ</a></li>
                 </ul>
             </div>
             <div class="clearfix"> </div>
